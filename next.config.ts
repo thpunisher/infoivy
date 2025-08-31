@@ -1,51 +1,72 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // Performance optimizations for faster dev server
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
+  // Performance optimizations
+  eslint: {
+    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
+  },
+  typescript: {
+    ignoreBuildErrors: process.env.NODE_ENV === 'development',
+  },
+  
+  // Modern configuration for Next.js 15
+  experimental: {
+    // Enable Turbopack for development
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
       },
     },
+    // Server actions configuration
+    serverActions: {
+      bodySizeLimit: '2mb',
+      allowedOrigins: ['localhost:3000']
+    } as const,  // Use const assertion to match the expected type
   },
-  // Allow cross-origin requests for mobile testing
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: '*',
-          },
-        ],
-      },
-    ]
+
+  // Security headers
+  headers: async () => {
+    if (process.env.NODE_ENV === 'development') {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            {
+              key: 'Access-Control-Allow-Origin',
+              value: '*',
+            },
+          ],
+        },
+      ];
+    }
+    return [];
   },
-  // Configure allowed dev origins for mobile testing
-  allowedDevOrigins: ['192.168.68.101'],
-  // Reduce bundle analysis overhead
+
+  // Webpack configuration
   webpack: (config, { dev, isServer }) => {
+    // Disable source maps in development for faster builds
     if (dev && !isServer) {
-      // Disable source maps in development for faster builds
       config.devtool = false;
     }
     return config;
   },
-  // Optimize images
+
+  // Image optimization
   images: {
     domains: ['localhost'],
-    unoptimized: true, // Faster dev builds
+    unoptimized: process.env.NODE_ENV === 'development',
   },
-  // Reduce TypeScript checking overhead
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
+
+  // Disable React Strict Mode in development for better performance
+  reactStrictMode: process.env.NODE_ENV !== 'development',
+
+  // Production optimizations
+  productionBrowserSourceMaps: false,
+  compress: true,
+  swcMinify: true,
 };
 
 export default nextConfig;

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     
     // Create the service name and account name for the QR code
     const serviceName = 'Invofy'
-    const accountName = user.email
+    const accountName = user.email || `user-${user.id}`
     
     // Generate the otpauth URL
     const otpauthUrl = authenticator.keyuri(accountName, serviceName, secret)
