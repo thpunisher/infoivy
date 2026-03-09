@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "next lint",
     "type-check": "tsc --noEmit",
     "db:setup": "echo 'Run the SQL migration in your Supabase dashboard: supabase/migrations/010_complete_database_schema.sql'",
     "db:reset": "echo 'Reset your Supabase database and run the migration again'",

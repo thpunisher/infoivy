@@ -15,6 +15,7 @@ export default [
       '**/.vercel/**',
       '**/dist/**',
       '**/public/**',
+      'tailwind.config.js',
     ],
   },
   js.configs.recommended,

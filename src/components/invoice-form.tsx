@@ -344,13 +344,13 @@ export function InvoiceForm({ mode = 'create', invoiceId, initialData, clients: 
             </Button>
             <div className="sm:block">
               <AIHelperButtons
-                onLineItemGenerated={(lineItem) => {
+                onLineItemGenerated={(lineItem: any) => {
                   // Find the first empty description field and fill it
                   const emptyItem = lineItems.find(item => !item.description.trim())
                   if (emptyItem) {
                     updateLineItem(emptyItem.id, 'description', lineItem.description || '')
                     updateLineItem(emptyItem.id, 'quantity', lineItem.quantity || 1)
-                    updateLineItem(emptyItem.id, 'unit_price', lineItem.unit_price || 0)
+                    updateLineItem(emptyItem.id, 'unit_price', lineItem.unit_price || lineItem.rate || lineItem.price || 0)
                   } else {
                     // If no empty field, add a new line item
                     addLineItem()
@@ -359,7 +359,7 @@ export function InvoiceForm({ mode = 'create', invoiceId, initialData, clients: 
                       if (newItem) {
                         updateLineItem(newItem.id, 'description', lineItem.description || '')
                         updateLineItem(newItem.id, 'quantity', lineItem.quantity || 1)
-                        updateLineItem(newItem.id, 'unit_price', lineItem.unit_price || 0)
+                        updateLineItem(newItem.id, 'unit_price', lineItem.unit_price || lineItem.rate || lineItem.price || 0)
                       }
                     }, 0)
                   }

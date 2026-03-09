@@ -132,7 +132,7 @@ export default async function DashboardPage() {
               {subscription?.plan === 'free' ? `${usage.current}/${usage.limit} this month` : 'Unlimited'}
             </p>
             {subscription?.plan === 'free' && (
-              <Progress value={(usage.current / usage.limit) * 100} className="mt-2" />
+              <Progress value={(Number(usage.current) / Number(usage.limit)) * 100} className="mt-2" />
             )}
           </CardContent>
         </Card>
@@ -226,8 +226,8 @@ export default async function DashboardPage() {
                       <span className="text-sm font-medium">Monthly Usage</span>
                       <span className="text-sm text-gray-600">{usage.current}/{usage.limit} invoices</span>
                     </div>
-                    <Progress value={(usage.current / usage.limit) * 100} className="h-2" />
-                    {usage.current >= usage.limit * 0.8 && (
+                    <Progress value={(Number(usage.current) / Number(usage.limit)) * 100} className="h-2" />
+                    {Number(usage.current) >= Number(usage.limit) * 0.8 && (
                       <p className="text-xs text-amber-600">
                         You're approaching your monthly limit. Consider upgrading to Pro.
                       </p>

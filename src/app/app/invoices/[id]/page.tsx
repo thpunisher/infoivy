@@ -346,7 +346,7 @@ export default function InvoiceDetailPage() {
                     return sum + (quantity * rate)
                   }, 0) || 0
                   
-                  const storedTax = parseFloat(invoice.tax) || 0
+                  const storedTax = Number(invoice.tax) || 0
                   const calculatedTotal = calculatedSubtotal + storedTax
                   
                   return (

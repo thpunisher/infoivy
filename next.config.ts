@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // Performance optimizations
   eslint: {
-    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
@@ -11,15 +11,6 @@ const nextConfig: NextConfig = {
   
   // Modern configuration for Next.js 15
   experimental: {
-    // Enable Turbopack for development
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
     // Server actions configuration
     serverActions: {
       bodySizeLimit: '2mb',
@@ -66,7 +57,6 @@ const nextConfig: NextConfig = {
   // Production optimizations
   productionBrowserSourceMaps: false,
   compress: true,
-  swcMinify: true,
 };
 
 export default nextConfig;

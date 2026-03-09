@@ -93,11 +93,11 @@ export default async function BillingPage({
                 style={{
                   width: isPro 
                     ? '100%'
-                    : `${Math.min((usage.current / usage.limit) * 100, 100)}%`
+                    : `${Math.min((Number(usage.current) / Number(usage.limit)) * 100, 100)}%`
                 }}
               ></div>
             </div>
-            {!isPro && usage.current >= usage.limit && (
+            {!isPro && Number(usage.current) >= Number(usage.limit) && (
               <p className="mt-2 text-sm text-red-600">
                 You've reached your monthly limit. Upgrade to Pro to create more invoices.
               </p>
