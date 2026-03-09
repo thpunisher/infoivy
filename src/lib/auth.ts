@@ -12,7 +12,9 @@ export async function signIn(formData: FormData) {
     password: formData.get('password') as string,
   }
 
+  console.log('Attempting sign in for:', data.email)
   const { error } = await supabase.auth.signInWithPassword(data)
+  if (error) console.error('Sign in error:', error.message)
 
   if (error) {
     redirect(`/auth/signin?error=${encodeURIComponent(error.message)}`)
@@ -35,7 +37,9 @@ export async function signUp(formData: FormData) {
     },
   }
 
+  console.log('Attempting sign up for:', data.email)
   const { error } = await supabase.auth.signUp(data)
+  if (error) console.error('Sign up error:', error.message)
 
   if (error) {
     redirect(`/auth/signup?error=${encodeURIComponent(error.message)}`)

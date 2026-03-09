@@ -2,7 +2,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/lib/database.types'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -56,7 +56,13 @@ export async function middleware(request: NextRequest) {
   )
 
   // Refresh session if expired - required for Server Components
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null;
+  try {
+    const { data: { user: foundUser } } = await supabase.auth.getUser()
+    user = foundUser;
+  } catch (err) {
+    console.error('Middleware Auth Error:', err);
+  }
   
   // Allow public access to landing page and auth routes
   const publicRoutes = ['/', '/auth', '/api/auth', '/_next', '/favicon.ico']

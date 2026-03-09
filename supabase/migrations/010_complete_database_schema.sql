@@ -199,6 +199,16 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   UNIQUE(user_id)
 );
 
+-- Create usage_counters table
+CREATE TABLE IF NOT EXISTS usage_counters (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  period_start DATE NOT NULL,
+  invoices_created INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(user_id, period_start)
+);
+
 -- Add missing columns to existing tables
 ALTER TABLE notification_settings ADD COLUMN IF NOT EXISTS email_invoice_overdue BOOLEAN DEFAULT TRUE;
 

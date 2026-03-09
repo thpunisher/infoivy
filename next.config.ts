@@ -2,9 +2,6 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Performance optimizations
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
@@ -14,8 +11,8 @@ const nextConfig: NextConfig = {
     // Server actions configuration
     serverActions: {
       bodySizeLimit: '2mb',
-      allowedOrigins: ['localhost:3000']
-    } as const,  // Use const assertion to match the expected type
+      allowedOrigins: ['localhost:3000', '127.0.0.1:3000']
+    } as const,
   },
 
   // Security headers
@@ -36,18 +33,17 @@ const nextConfig: NextConfig = {
     return [];
   },
 
-  // Webpack configuration
-  webpack: (config, { dev, isServer }) => {
-    // Disable source maps in development for faster builds
-    if (dev && !isServer) {
-      config.devtool = false;
-    }
-    return config;
-  },
+  // Turbopack configuration
+  turbopack: {},
 
   // Image optimization
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
     unoptimized: process.env.NODE_ENV === 'development',
   },
 
